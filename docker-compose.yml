@@ -11,7 +11,12 @@ services:
     image: mysql:8.1
     container_name: mysqldb
     restart: unless-stopped
-#   Create your personal .env file from .envTemplate
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 768M
+    #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
     environment:
@@ -35,6 +40,11 @@ services:
       - start-dev
     container_name: ms-keycloak
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 768M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -53,7 +63,12 @@ services:
       context: ./ms-config-server/
     container_name: ms-config-server
     restart: unless-stopped
-#   Create your personal .env file from .envTemplate
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 512M
+    #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
     environment:
@@ -70,9 +85,14 @@ services:
       args:
         - PROFILE=$MS_EUREKA_SERVER_PROFILE
         - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
-        - MS_CONFIG_SERVER_PORT=${MS_CONFIG_SERVER_DOCKER_PORT}
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     container_name: ms-eureka-server
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -85,19 +105,63 @@ services:
     depends_on:
       - ms-config-server
 
-#  ms-gateway:
-#    build:
-#      context: ./ms-gateway/
-#    restart: unless-stopped
-##   Create your personal .env file from .envTemplate
-#    env_file:
-#      - ./.env
-#    environment:
-#      - PORT=$MS_GATEWAY_DOCKER_PORT
-#    ports:
-#      - ${MS_GATEWAY_LOCAL_PORT}:${MS_GATEWAY_DOCKER_PORT}
-#    networks:
-#      - net-costume-mania
-#    depends_on:
-#      - ms-config-server
-#      - ms-eureka-server
+  ms-gateway:
+    build:
+      context: ./ms-gateway/
+      args:
+        - PROFILE=$MS_GATEWAY_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_GATEWAY_DOCKER_PORT
+      - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
+      - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+    ports:
+      - ${MS_GATEWAY_LOCAL_PORT}:${MS_GATEWAY_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-config-server
+      - ms-eureka-server
+
+
+  ms-users:
+    build:
+      context: ./ms-users/
+      args:
+        - PROFILE=$MS_USERS_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_USERS_DOCKER_PORT
+      - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
+      - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+      - DB_URL=$MYSQLDB_HOST
+      - DB_PORT=$MYSQLDB_DOCKER_PORT
+      - DB_SERVICE=$MYSQLDB_DATABASE
+      - DB_USER=$MYSQLDB_USER
+      - DB_PASS=$MYSQLDB_PASSWORD
+    ports:
+      - ${MS_USERS_LOCAL_PORT}:${MS_USERS_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-gateway
