@@ -31,4 +31,6 @@ jobs:
       run: cp .envTemplate .env
 
     - name: Run Docker Compose
-        run: docker-compose up -d --build
+        uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: "./docker/docker-compose.yml"
