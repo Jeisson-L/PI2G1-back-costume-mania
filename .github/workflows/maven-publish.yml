@@ -28,9 +28,8 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Copy .env
-      run: cp .envTemplate .env
+      run: |
+        cp .envTemplate .env
 
     - name: Run Docker Compose
-        uses: isbang/compose-action@v1.5.1
-        with:
-          compose-file: "./docker/docker-compose.yml"
+      run: docker-compose -f "docker-compose.yml" up -d --build
