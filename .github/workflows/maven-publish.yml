@@ -27,7 +27,9 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+    - name: Copy .env
+      run: |
+        cp .envTemplate .env
+
+    - name: Run Docker Compose
+        run: docker-compose -f "docker-compose.yml" up -d --build
