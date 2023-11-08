@@ -28,9 +28,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Copy .env
-      run: |
-        cp .envTemplate .env
+      run: cp .envTemplate .env
 
     - name: Run Docker Compose
-        run: |
-          docker-compose up -d --build
+        run: docker-compose up -d --build
