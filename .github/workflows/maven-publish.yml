@@ -66,4 +66,4 @@ jobs:
       run: sudo docker-compose -f "docker-compose.yml" up -d
 
     - name: Change permisions to working folder
-      run: sudo chmod -R 777 '$GITHUB_WORKSPACE'
+      run: sudo chmod -R 777 '/home/ubuntu/actions-runner/_work/'
