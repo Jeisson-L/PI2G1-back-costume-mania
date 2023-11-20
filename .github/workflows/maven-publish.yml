@@ -17,6 +17,9 @@ jobs:
       packages: write
 
     steps:
+    - name: Change permisions to working folder
+      run: sudo chmod -R 777 '$GITHUB_WORKSPACE'
+      
     - uses: actions/checkout@v3
     - name: Set up JDK 17
       uses: actions/setup-java@v3
@@ -56,4 +59,4 @@ jobs:
       run: sudo docker-compose -f "docker-compose.yml" up -d
 
     - name: Change permisions to working folder
-      run: sudo chmod -R 777 '/home/ubuntu/actions-runner/_work/'
+      run: sudo chmod -R 777 '$GITHUB_WORKSPACE'
