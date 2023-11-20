@@ -81,7 +81,6 @@ services:
     networks:
       - net-costume-mania
     depends_on:
-      - mysqldb
       - ms-config-server
       - ms-eureka-server
 
