@@ -5,12 +5,14 @@ import com.costumemania.mscatalog.service.CatalogService;
 import com.costumemania.mscatalog.service.ModelService;
 import com.costumemania.mscatalog.service.SizeService;
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -481,7 +483,7 @@ public class CatalogController {
     public ResponseEntity<Page<CatalogResponse>> getByCategoryPageable(@PathVariable Integer idCategory,@PathVariable Integer page){
         // first verify if the category exists with feign
         try {
-            modelService.getCategorydById(idCategory);
+            modelService.getModelByIdCategory(idCategory);
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
@@ -965,6 +967,7 @@ public class CatalogController {
 
     // adm
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Catalog> createModel(@RequestBody CatalogDTO catalogDTO){
         // verify model with Feign - 404
         try {
@@ -1002,7 +1005,8 @@ public class CatalogController {
     }
 
     // users - to buy
-    @PutMapping("{idCatalog}/{quantity}")
+    @PutMapping("/{idCatalog}/{quantity}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @PathVariable Integer quantity) {
         // verify if catalog exists - 404
         Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
@@ -1020,6 +1024,7 @@ public class CatalogController {
 
     // adm
     @PutMapping("/modify/{idCatalog}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Catalog> modifyCatalog(@PathVariable Integer idCatalog, @RequestBody CatalogDTO catalogDTO) {
         // verify if catalog exists (active or inactive) - 404
         Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
@@ -1076,6 +1081,7 @@ public class CatalogController {
 
     // adm - deshabilita catalogo
     @PutMapping("/delete/{idCatalog}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Catalog> makeInactiv (@PathVariable Integer idCatalog) {
         // verify if catalog exists (active or inactive) - 404
         Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
@@ -1088,6 +1094,7 @@ public class CatalogController {
     }
     // adm - deshabilita catalogo por modelo
     @PutMapping("/deleteByM/{idModel}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> makeInactivByModel (@PathVariable Integer idModel) {
         Optional<List<Catalog>> searchCatalog = catalogService.getCatalogByModel(idModel);
         if (searchCatalog.get().isEmpty()) {
@@ -1099,6 +1106,7 @@ public class CatalogController {
     }
     // adm - deshabilita catalogo por categoria
     @PutMapping("/deleteByC/{idCategory}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> makeInactivByCat (@PathVariable Integer idCategory) {
         try {
             modelService.getCategorydById(idCategory);

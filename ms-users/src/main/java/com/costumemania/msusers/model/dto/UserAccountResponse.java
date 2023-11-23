@@ -21,11 +21,12 @@ import java.time.LocalDate;
 public class UserAccountResponse {
     Integer id;
     String dni;
-    String username;
+//    String username;
     String email;
     String firstName;
     String lastName;
     Boolean status;
+    Boolean softDelete;
     LocalDate createdAt;
     LocalDate updatedAt;
     Role role;
@@ -34,11 +35,12 @@ public class UserAccountResponse {
         return UserAccountResponse.builder()
                 .id(user.getId())
                 .dni(user.getDni())
-                .username(user.getUsername())
+//                .username(user.getUsername())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .status(user.getStatus())
+                .softDelete(user.getSoftDelete())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .role(user.getRole())
