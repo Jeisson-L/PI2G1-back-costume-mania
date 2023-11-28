@@ -6,17 +6,19 @@ volumes:
 networks:
   net-costume-mania:
 
+
 services:
+
   ms-config-server:
     build:
       context: ./ms-config-server/
     container_name: ms-config-server
     restart: unless-stopped
     #deploy:
-      #resources:
-        #limits:
-          #cpus: "1.0"
-          #memory: 512M
+    #resources:
+    #limits:
+    #cpus: "1.0"
+    #memory: 512M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -38,10 +40,10 @@ services:
     container_name: ms-eureka-server
     restart: unless-stopped
     #deploy:
-      #resources:
-        #limits:
-          #cpus: "0.5"
-          #memory: 256M
+    #resources:
+    #limits:
+    #cpus: "0.5"
+    #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -63,10 +65,10 @@ services:
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
     #deploy:
-      #resources:
-        #limits:
-          #cpus: "0.5"
-          #memory: 256M
+    #resources:
+    #limits:
+    #cpus: "0.5"
+    #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -91,10 +93,10 @@ services:
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
     #deploy:
-      #resources:
-        #limits:
-          #cpus: "0.5"
-          #memory: 256M
+    #resources:
+    #limits:
+    #cpus: "0.5"
+    #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -109,7 +111,6 @@ services:
     depends_on:
       - ms-gateway
 
-
   ms-delete:
     build:
       context: ./ms-delete/
@@ -119,10 +120,10 @@ services:
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
     #deploy:
-      #resources:
-        #limits:
-          #cpus: "0.5"
-          #memory: 256M
+    #resources:
+    #limits:
+    #cpus: "0.5"
+    #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -146,10 +147,10 @@ services:
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
     #deploy:
-      #resources:
-        #limits:
-          #cpus: "0.5"
-          #memory: 256M
+    #resources:
+    #limits:
+    #cpus: "0.5"
+    #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -164,7 +165,6 @@ services:
     depends_on:
       - ms-gateway
 
-
   ms-product:
     build:
       context: ./ms-product/
@@ -174,10 +174,10 @@ services:
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
     #deploy:
-      #resources:
-        #limits:
-          #cpus: "0.5"
-          #memory: 256M
+    #resources:
+    #limits:
+    #cpus: "0.5"
+    #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -201,10 +201,10 @@ services:
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
     #deploy:
-      #resources:
-        #limits:
-          #cpus: "0.5"
-          #memory: 256M
+    #resources:
+    #limits:
+    #cpus: "0.5"
+    #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -219,7 +219,6 @@ services:
     depends_on:
       - ms-gateway
 
-
   ms-bills:
     build:
       context: ./ms-bills/
@@ -229,10 +228,10 @@ services:
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
     #deploy:
-      #resources:
-        #limits:
-          #cpus: "0.5"
-          #memory: 256M
+    #resources:
+    #limits:
+    #cpus: "0.5"
+    #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -246,7 +245,6 @@ services:
       - net-costume-mania
     depends_on:
       - ms-gateway
-
 
   ms-reporting:
     build:
@@ -274,4 +272,3 @@ services:
       - net-costume-mania
     depends_on:
       - ms-gateway
-
