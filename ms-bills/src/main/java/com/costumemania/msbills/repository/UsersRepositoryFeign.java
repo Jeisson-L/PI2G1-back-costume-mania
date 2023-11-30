@@ -1,6 +1,7 @@
 package com.costumemania.msbills.repository;
 
 import com.costumemania.msbills.LoadBalancerConfiguration;
+import com.costumemania.msbills.model.requiredEntity.UserExists;
 import feign.Headers;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -13,6 +14,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @LoadBalancerClient(name = "ms-users", configuration = LoadBalancerConfiguration.class)
 @Headers("Authorization: {token}")
 public interface UsersRepositoryFeign {
-    @GetMapping(path = "/api/v1/users/{id}")
-    ResponseEntity<?> userById(@RequestHeader("Authorization") String token, @PathVariable(name = "id") int id);
+    @GetMapping(path = "/api/v1/users/exists/{id}")
+    ResponseEntity<UserExists> userExists(@RequestHeader("Authorization") String token, @PathVariable(name = "id") int id);
 }
